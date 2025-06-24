@@ -80,12 +80,12 @@ resource "aws_iam_role_policy" "service_catalog_policy" {
 
 ## 3. Create CloudFormation Template for Web App
 data "template_file" "web_app_template" {
-  template = file("${path.module}/ec2_instance-cft.yaml")
+  template = file("${path.module}/ec2_instance_cft.yaml")
 }
 
 resource "aws_s3_object" "web_app_template" {
   bucket  = aws_s3_bucket.template_bucket.bucket
-  key     = "templates/ec2_instance-cft.yaml"
+  key     = "templates/ec2_instance_cft.yaml"
   content = data.template_file.web_app_template.rendered
 }
 
