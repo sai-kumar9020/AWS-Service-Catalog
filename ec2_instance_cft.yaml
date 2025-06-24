@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Launch a web server EC2 instance
+
+Resources:
+  WebAppInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0cbad6815f3a09a6d
+      SecurityGroups:
+        - !Ref WebAppSG
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          yum install -y httpd
+          systemctl start httpd
+          systemctl enable httpd
+          echo "Hello from Service Catalog WebApp" > /var/www/html/index.html
+
+  WebAppSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
