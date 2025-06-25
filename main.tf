@@ -11,7 +11,7 @@ resource "aws_s3_bucket" "template_bucket" {
   bucket = "service-catalog-templates-${random_id.bucket_suffix.hex}"
   # IMPORTANT: Add a public access block to ensure it's not publicly accessible
   # Service Catalog will access it internally.
-  acl = "private"
+  
 }
 
 resource "aws_s3_bucket_public_access_block" "template_bucket_public_access_block" {
@@ -109,7 +109,6 @@ resource "aws_s3_object" "web_app_template_object" { # Renamed to avoid conflict
   key     = "templates/ec2_instance_cft.yaml"
   content = data.template_file.web_app_template.rendered
   etag    = filemd5("${path.module}/ec2_instance_cft.yaml") # Ensure update on file change
-  acl     = "private"
   content_type = "text/plain" # Important for YAML files
 }
 
